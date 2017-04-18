@@ -12,6 +12,7 @@ import CoreData
 class RegisterViewController: UIViewController {
     
     var people = [NSManagedObject]()
+    var accountType: Int32?
     
     override func viewDidLoad() {
         self.changeBackground()
@@ -41,7 +42,7 @@ class RegisterViewController: UIViewController {
         
        //Alert view asks for the mentor's username and password and stores it to core data
         let alert = UIAlertController(title: "New Mentor",
-                                      message: "Register Yourself - THIS ALERT IS NOT READY TO TAKE IN INPUTS YET",
+                                      message: "Register Yourself",
                                       preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save",
@@ -77,13 +78,15 @@ class RegisterViewController: UIViewController {
                 animated: true,
                 completion: nil)
     
+        //update account type
+        accountType = 0
     }
     
     @IBAction func MenteeSelected(_ sender: Any) {
         
         //Alert view asks for the mentor's username and password and stores it to core data
         let alert = UIAlertController(title: "New Mentee",
-                                      message: "Register Yourself - THIS ALERT IS NOT READY TO TAKE IN INPUTS YET",
+                                      message: "Register Yourself",
                                       preferredStyle: .alert)
         
         let saveAction = UIAlertAction(title: "Save",
@@ -119,6 +122,9 @@ class RegisterViewController: UIViewController {
         present(alert,
                 animated: true,
                 completion: nil)
+        
+        //update account type
+        accountType = 1
         
     }
     
@@ -179,6 +185,15 @@ class RegisterViewController: UIViewController {
         }
     }
     
+    @IBAction func sendUserBeyongRegistration(_ sender: Any) {
+        
+        if accountType == 0 { //send mentor to Confirmation screen
+            performSegue(withIdentifier: "confirmMentor", sender: self)
+            
+        } else { //send mentee to Edit Profile screen
+            performSegue(withIdentifier: "confirmMenteeToEditProfile", sender: self)
+        }
+    }
     public func changeBackground() {
         let defaults = UserDefaults.standard
         let bgColor = defaults.string(forKey: "backgroundColor")
